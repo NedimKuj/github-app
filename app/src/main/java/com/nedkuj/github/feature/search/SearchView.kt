@@ -6,4 +6,7 @@ import io.reactivex.Observable
 
 interface SearchView : BaseView<SearchFullViewState> {
     fun onLoad(): Observable<Lifecycle.Event>
+    fun onSearch(): Observable<String>
+    fun onRepoClick(): Observable<String>
+    fun onUserImageClick(): Observable<String>
 }

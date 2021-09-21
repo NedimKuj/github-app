@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Spacings  -->
+    <dimen name="spacing_tiny">1dp</dimen>
+    <dimen name="spacing_smaller">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_standard">8dp</dimen>
+    <dimen name="spacing_medium">10dp</dimen>
+    <dimen name="spacing_large">12dp</dimen>
+    <dimen name="spacing_larger">16dp</dimen>
+    <dimen name="spacing_largest">24dp</dimen>
+
+    <!--  Typography  -->
+    <dimen name="textSize_title">18sp</dimen>
+    <dimen name="textSize_subtitle">14sp</dimen>
+
+    <!--  Search list item values  -->
+    <dimen name="repo_owner_image_wh">100dp</dimen>
+</resources>
