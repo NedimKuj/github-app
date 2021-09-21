@@ -40,9 +40,11 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "API", "\"https://api.github.com\"")
+            buildConfigField("String", "WEB", "\"https://github.com/\"")
         }
         release {
             buildConfigField("String", "API", "\"https://api.github.com\"")
+            buildConfigField("String", "WEB", "\"https://github.com/\"")
         }
     }
 }

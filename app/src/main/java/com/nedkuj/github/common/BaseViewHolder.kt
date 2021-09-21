@@ -17,7 +17,7 @@ abstract class BaseViewHolder<T : Any, AV : Any, VB : ViewDataBinding>(
     @CallSuper
     open fun bind(data: T) {
         this.data = data
-//        binding.setVariable(BR.item, this)
+        binding.setVariable(BR.item, this)
         bindingData.data.set(data)
     }
 
