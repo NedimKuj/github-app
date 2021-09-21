@@ -28,4 +28,8 @@
 
     <!-- General strings -->
     <string name="permission">permission</string>
+
+    <!--  Placeholders  -->
+    <string name="repository_name">Repository name</string>
+    <string name="name_of_the_author">Name of the author</string>
 </resources>
