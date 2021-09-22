@@ -6,61 +6,128 @@ import com.nedkuj.github.BuildConfig
 import com.nedkuj.github.common.BasePresenter
 import com.nedkuj.github.di.fragment.Navigator
 import com.nedkuj.github.model.SearchReposPayload
+import com.nedkuj.github.model.SortState
+import com.nedkuj.github.model.response.ResponseObject
 import com.nedkuj.github.network.repository.GetReposDataRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
 class SearchPresenter @Inject constructor(
-        private val navigator: Navigator,
-        private val getReposDataRepository: GetReposDataRepository
+    private val navigator: Navigator,
+    private val getReposDataRepository: GetReposDataRepository
 ) : BasePresenter<SearchView, SearchViewState, SearchFullViewState>() {
     override fun bindIntents() {
         val onSearch = intent(SearchView::onSearch)
-                .switchMapToViewState(
-                        { queryText ->
-                            val payload = SearchReposPayload(1, 10, queryText)
-                            getReposDataRepository.fetch(payload)
-                        },
-                        { SearchSuccessViewState(it.items) },
-                        { throwable, _ -> SearchErrorViewState(throwable) },
-                        { SearchLoadingViewState(true) }
-                )
+            .switchMapToViewState(
+                { queryText ->
+                    if (queryText.isNotEmpty()) {
+                        getReposDataRepository.fetch(
+                            SearchReposPayload(1, BuildConfig.PAGINATION_LIMIT, queryText, latestViewState.sortState?.value)
+                        )
+                    } else {
+                        Observable.just(ResponseObject(mutableListOf()))
+                    }
+                },
+                { SearchSuccessViewState(it.items) },
+                { throwable, _ -> SearchErrorViewState(throwable) },
+                { SearchLoadingViewState(true) }
+            )
+
+        val onNextPage = intent(SearchView::onNextPage)
+            .switchMapToViewState(
+                { query ->
+                    getReposDataRepository.fetch(
+                        SearchReposPayload(latestViewState.currentPage, BuildConfig.PAGINATION_LIMIT, query, latestViewState.sortState?.value)
+                    )
+                },
+                { SearchMoreViewState(latestViewState.repositories.orEmpty().plus(it.items)) },
+                { throwable, _ -> SearchErrorViewState(throwable) },
+                { SearchMoreLoadingViewState(true, latestViewState.currentPage) }
+            )
+
+        val onSortClick = intent(SearchView::onSortClick)
+            .switchMapToViewState(
+                { Observable.just(it) },
+                { SearchNavigationViewState(null) },
+                { throwable, _ -> SearchErrorViewState(throwable) }
+            ).executeActionOn<SearchNavigationViewState> {
+                navigator.getNavController().navigate(SearchFragmentDirections.navSearchToSort())
+            }
+
+        val onSort = intent(SearchView::onSort)
+            .switchMapToViewState(
+                {
+                    val queryText = it.first
+                    val sortStateString = it.second ?: SortState.SORT_DEFAULT_BEST_MATCH.value
+
+                    getReposDataRepository.fetch(
+                        SearchReposPayload(1, BuildConfig.PAGINATION_LIMIT, queryText, sortStateString)
+                    ).map { response ->
+                        sortStateString to response
+                    }
+                },
+                {
+                    val sortStateString = it.first
+                    val responseObject = it.second
+
+                    SearchSortViewState(responseObject.items, SortState.from(sortStateString))
+                },
+                { throwable, _ -> SearchErrorViewState(throwable) },
+                { SearchLoadingViewState(true) }
+            ).emmitAfter<SearchSortViewState> { SearchMoreLoadingViewState(false, 1) }
 
         val onRepo = intent(SearchView::onRepoClick)
-                .switchMapToViewState(
-                        { Observable.just(it) },
-                        { SearchNavigationViewState(it) },
-                        { throwable, _ -> SearchErrorViewState(throwable) },
-                        { SearchLoadingViewState(true) }
-                ).executeActionOn<SearchNavigationViewState> { state ->
-                    state.parameter?.let { param ->
-                        navigator.getNavController().navigate(SearchFragmentDirections.navSearchToRepoDetails(param))
-                    }
-                }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
+            .switchMapToViewState(
+                { Observable.just(it) },
+                { SearchNavigationViewState(it) },
+                { throwable, _ -> SearchErrorViewState(throwable) },
+                { SearchLoadingViewState(true) }
+            ).executeActionOn<SearchNavigationViewState> { state ->
+                state.parameter?.let { param ->
+                    navigator.getNavController().navigate(SearchFragmentDirections.navSearchToRepoDetails(param))
+                }
+            }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
 
         val onUserImage = intent(SearchView::onUserImageClick)
-                .switchMapToViewState(
-                        { Observable.just(it) },
-                        { SearchNavigationViewState(it) },
-                        { throwable, _ -> SearchErrorViewState(throwable) },
-                        { SearchLoadingViewState(true) }
-                ).executeActionOn<SearchNavigationViewState> { state ->
-                    state.parameter?.let { param ->
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(BuildConfig.WEB + param)
-                        navigator.startActivityIntent(intent)
-                    }
-                }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
+            .switchMapToViewState(
+                { Observable.just(it) },
+                { SearchNavigationViewState(it) },
+                { throwable, _ -> SearchErrorViewState(throwable) },
+                { SearchLoadingViewState(true) }
+            ).executeActionOn<SearchNavigationViewState> { state ->
+                state.parameter?.let { param ->
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(BuildConfig.WEB + param)
+                    navigator.startActivityIntent(intent)
+                }
+            }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
 
-        subscribeForViewStateChanges(onSearch, onRepo, onUserImage)
+        subscribeForViewStateChanges(
+            onSearch,
+            onNextPage,
+            onSortClick,
+            onSort,
+            onRepo,
+            onUserImage
+        )
     }
 
     override fun viewStateReducer(previousState: SearchFullViewState, changes: SearchViewState): SearchFullViewState {
         return when (changes) {
-            is SearchSuccessViewState -> previousState.copy(loading = false, repositories = changes.repositories)
+            is SearchSuccessViewState -> previousState.copy(
+                loading = false,
+                repositories = changes.repositories,
+                currentPage = 1
+            )
             is SearchLoadingViewState -> previousState.copy(loading = changes.loading)
             is SearchErrorViewState -> previousState.copy(loading = false, error = changes.error)
             is SearchNavigationViewState -> previousState.copy(parameter = changes.parameter)
+            is SearchMoreViewState -> previousState.copy(
+                loading = false,
+                repositories = changes.repositories
+            )
+            is SearchMoreLoadingViewState -> previousState.copy(loading = changes.loading, currentPage = changes.currentPage + 1)
+            is SearchSortViewState -> previousState.copy(repositories = changes.repositories, sortState = changes.sortState)
         }
     }
 

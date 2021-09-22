@@ -15,6 +15,10 @@
             app:destination="@id/nav_repository_details"
             app:enterAnim="@animator/screen_enter"
             app:exitAnim="@animator/screen_exit"/>
+
+        <action
+            android:id="@+id/nav_Search_to_sort"
+            app:destination="@id/nav_sort"/>
     </fragment>
 
     <fragment
@@ -27,5 +31,11 @@
             android:name="name"
             app:nullable="false"/>
     </fragment>
+
+    <dialog
+        android:id="@+id/nav_sort"
+        android:name="com.nedkuj.github.feature.sort.SortFragment"
+        android:label="SORT"
+        tools:layout="@layout/fragment_sort"/>
 
 </navigation>

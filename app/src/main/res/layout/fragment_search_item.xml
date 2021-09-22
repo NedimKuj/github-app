@@ -64,7 +64,7 @@
             android:drawablePadding="@dimen/spacing_standard"
             android:gravity="center"
             android:text="@{item.bindingData.data.forks}"
-            app:drawableStartCompat="@drawable/ic_watch"
+            app:drawableStartCompat="@drawable/ic_fork"
             app:layout_constraintBottom_toBottomOf="@id/owner_image"
             app:layout_constraintEnd_toStartOf="@id/issues_count"
             app:layout_constraintStart_toEndOf="@id/watchers_count"/>
