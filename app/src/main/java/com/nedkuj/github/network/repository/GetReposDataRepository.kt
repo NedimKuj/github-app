@@ -11,7 +11,7 @@ class GetReposDataRepository @Inject constructor() : DataRepository<SearchReposP
     override fun fetchData(payload: SearchReposPayload): Observable<ResponseObject> {
         return retrofitClient
                 .getGitHubAPI()
-                .getRepositories(payload.page, payload.perPage, payload.query)
+                .getRepositories(payload.page, payload.perPage, payload.query, payload.sort)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toObservable()

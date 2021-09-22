@@ -17,7 +17,7 @@ fun <T : Entity<*>> setRecyclerViewProperties(recyclerView: RecyclerView, items:
 }
 
 @BindingAdapter("android:text")
-fun setText(textView: TextView, int: Int){
+fun setText(textView: TextView, int: Int) {
     textView.text = int.toString()
 }
 

@@ -32,4 +32,9 @@
     <!--  Placeholders  -->
     <string name="repository_name">Repository name</string>
     <string name="name_of_the_author">Name of the author</string>
+    <string name="start_typing">Start typing to search repositories</string>
+    <string name="stars">Stars</string>
+    <string name="forks">Forks</string>
+    <string name="updated">Updated</string>
+    <string name="default_best_match">Default - best match</string>
 </resources>

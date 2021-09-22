@@ -11,7 +11,8 @@ interface GitHubAPI {
     fun getRepositories(
             @Query("page") page: Int,
             @Query("per_page") perPage: Int,
-            @Query("q") query: String
+            @Query("q") query: String,
+            @Query("sort") sort : String?
     ): Single<ResponseObject>
 
 }

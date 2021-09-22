@@ -41,10 +41,12 @@ android {
         debug {
             buildConfigField("String", "API", "\"https://api.github.com\"")
             buildConfigField("String", "WEB", "\"https://github.com/\"")
+            buildConfigField("int", "PAGINATION_LIMIT", '10')
         }
         release {
             buildConfigField("String", "API", "\"https://api.github.com\"")
             buildConfigField("String", "WEB", "\"https://github.com/\"")
+            buildConfigField("int", "PAGINATION_LIMIT", '10')
         }
     }
 }
