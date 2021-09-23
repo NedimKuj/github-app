@@ -21,8 +21,6 @@ class SearchSuccessViewState(val repositories: List<Repository>?) : SearchViewSt
 class SearchLoadingViewState(val loading: Boolean?) : SearchViewState()
 class SearchErrorViewState(val error: Throwable?) : SearchViewState()
 class SearchNavigationViewState(val parameter: String?) : SearchViewState()
-
 class SearchMoreViewState(val repositories: List<Repository>?): SearchViewState()
 class SearchMoreLoadingViewState(val loading: Boolean?, val currentPage: Int): SearchViewState()
-
 class SearchSortViewState(val repositories: List<Repository>?, val sortState: SortState?): SearchViewState()
