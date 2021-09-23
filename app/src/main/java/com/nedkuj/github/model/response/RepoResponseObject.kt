@@ -5,6 +5,6 @@ import com.nedkuj.github.model.Repository
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ResponseObject(
+data class RepoResponseObject(
         val items: List<Repository>
 ) : Parcelable

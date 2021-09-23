@@ -48,4 +48,5 @@
     <string name="language_string">Language: %s</string>
     <string name="updated_at_string">Updated at %s</string>
     <string name="created_at_string">Created at %s</string>
+    <string name="about_the_author">About the author</string>
 </resources>

@@ -7,7 +7,7 @@ import com.nedkuj.github.common.BasePresenter
 import com.nedkuj.github.di.fragment.Navigator
 import com.nedkuj.github.model.SearchReposPayload
 import com.nedkuj.github.model.SortState
-import com.nedkuj.github.model.response.ResponseObject
+import com.nedkuj.github.model.response.RepoResponseObject
 import com.nedkuj.github.network.repository.GetReposDataRepository
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class SearchPresenter @Inject constructor(
                             SearchReposPayload(1, BuildConfig.PAGINATION_LIMIT, queryText, latestViewState.sortState?.value)
                         )
                     } else {
-                        Observable.just(ResponseObject(mutableListOf()))
+                        Observable.just(RepoResponseObject(mutableListOf()))
                     }
                 },
                 { SearchSuccessViewState(it.items) },
