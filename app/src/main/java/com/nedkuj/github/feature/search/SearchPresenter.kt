@@ -37,7 +37,12 @@ class SearchPresenter @Inject constructor(
             .switchMapToViewState(
                 { query ->
                     getReposDataRepository.fetch(
-                        SearchReposPayload(latestViewState.currentPage, BuildConfig.PAGINATION_LIMIT, query, latestViewState.sortState?.value)
+                        SearchReposPayload(
+                            latestViewState.currentPage,
+                            BuildConfig.PAGINATION_LIMIT,
+                            query,
+                            latestViewState.sortState?.value
+                        )
                     )
                 },
                 { SearchMoreViewState(latestViewState.repositories.orEmpty().plus(it.items)) },
@@ -48,9 +53,9 @@ class SearchPresenter @Inject constructor(
         val onSortClick = intent(SearchView::onSortClick)
             .switchMapToViewState(
                 { Observable.just(it) },
-                { SearchNavigationViewState(null) },
+                { SearchUrlViewState(null) },
                 { throwable, _ -> SearchErrorViewState(throwable) }
-            ).executeActionOn<SearchNavigationViewState> {
+            ).executeActionOn<SearchUrlViewState> {
                 navigator.getNavController().navigate(SearchFragmentDirections.navSearchToSort())
             }
 
@@ -83,7 +88,7 @@ class SearchPresenter @Inject constructor(
                 { throwable, _ -> SearchErrorViewState(throwable) },
                 { SearchLoadingViewState(true) }
             ).executeActionOn<SearchNavigationViewState> { state ->
-                state.parameter?.let { param ->
+                state.repository?.let { param ->
                     navigator.getNavController().navigate(SearchFragmentDirections.navSearchToRepoDetails(param))
                 }
             }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
@@ -91,16 +96,16 @@ class SearchPresenter @Inject constructor(
         val onUserImage = intent(SearchView::onUserImageClick)
             .switchMapToViewState(
                 { Observable.just(it) },
-                { SearchNavigationViewState(it) },
+                { SearchUrlViewState(it) },
                 { throwable, _ -> SearchErrorViewState(throwable) },
                 { SearchLoadingViewState(true) }
-            ).executeActionOn<SearchNavigationViewState> { state ->
-                state.parameter?.let { param ->
+            ).executeActionOn<SearchUrlViewState> { state ->
+                state.urlParameter?.let { param ->
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse(BuildConfig.WEB + param)
                     navigator.startActivityIntent(intent)
                 }
-            }.emmitAfter<SearchNavigationViewState> { SearchNavigationViewState(null) }
+            }.emmitAfter<SearchUrlViewState> { SearchUrlViewState(null) }
 
         subscribeForViewStateChanges(
             onSearch,
@@ -121,7 +126,8 @@ class SearchPresenter @Inject constructor(
             )
             is SearchLoadingViewState -> previousState.copy(loading = changes.loading)
             is SearchErrorViewState -> previousState.copy(loading = false, error = changes.error)
-            is SearchNavigationViewState -> previousState.copy(parameter = changes.parameter)
+            is SearchUrlViewState -> previousState.copy(urlParameter = changes.urlParameter)
+            is SearchNavigationViewState -> previousState.copy(repository = changes.repository)
             is SearchMoreViewState -> previousState.copy(
                 loading = false,
                 repositories = changes.repositories

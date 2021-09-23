@@ -19,7 +19,7 @@ class SearchVH(parent: ViewGroup, adapterView: SearchAdapterView) : BaseViewHold
 ) {
     init {
         itemView.clicks()
-                .map { data.name }
+                .map { data }
                 .subscribe(adapterView.onItemPressed)
 
         binding.ownerImage.clicks()

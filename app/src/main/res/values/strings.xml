@@ -39,4 +39,13 @@
     <string name="forks">Forks</string>
     <string name="updated">Updated</string>
     <string name="default_best_match">Default - best match</string>
+
+    <!--  Repository details screen  -->
+    <string name="owner_details">Owner details</string>
+    <string name="repo_details">Repo details</string>
+    <string name="public_repo">Public repository</string>
+    <string name="private_repo">Private repository</string>
+    <string name="language_string">Language: %s</string>
+    <string name="updated_at_string">Updated at %s</string>
+    <string name="created_at_string">Created at %s</string>
 </resources>
