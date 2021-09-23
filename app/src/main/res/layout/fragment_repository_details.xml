@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,7 +12,145 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_standard">
+
+        <ImageView
+            android:id="@+id/author_image"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/author_image_h"
+            android:srcNetwork='@{context.bindingData.data.repository.owner.avatar_url ?? ""}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/author_name"
+            style="@style/GitHubTitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{context.bindingData.data.repository.owner.login}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_image"/>
+
+        <TextView
+            android:id="@+id/repo_full_name"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{context.bindingData.data.repository.full_name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_name"/>
+
+        <TextView
+            android:id="@+id/repo_description"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{context.bindingData.data.repository.description}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_full_name"/>
+
+        <TextView
+            android:id="@+id/repo_visibility"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_standard"
+            android:text="@{context.bindingData.data.repository.private ? @string/public_repo : @string/private_repo}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_description"/>
+
+        <TextView
+            android:id="@+id/repo_language"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/language_string(context.bindingData.data.repository.language)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_visibility"/>
+
+        <TextView
+            android:id="@+id/repo_creation_date"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/created_at_string(context.bindingData.data.repository.created_at)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_language"/>
+
+        <TextView
+            android:id="@+id/repo_update_date"
+            style="@style/GithubSubtitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/updated_at_string(context.bindingData.data.repository.updated_at)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_creation_date"/>
+
+        <TextView
+            android:id="@+id/watchers_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_standard"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:gravity="center"
+            android:text="@{context.bindingData.data.repository.watchers}"
+            app:drawableStartCompat="@drawable/ic_watch"
+            app:layout_constraintEnd_toStartOf="@id/forks_count"
+            app:layout_constraintStart_toStartOf="@id/repo_update_date"
+            app:layout_constraintTop_toBottomOf="@id/repo_update_date"/>
+
+        <TextView
+            android:id="@+id/forks_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:gravity="center"
+            android:text="@{context.bindingData.data.repository.forks}"
+            app:drawableStartCompat="@drawable/ic_fork"
+            app:layout_constraintBottom_toBottomOf="@id/watchers_count"
+            app:layout_constraintEnd_toStartOf="@id/issues_count"
+            app:layout_constraintStart_toEndOf="@id/watchers_count"/>
+
+        <TextView
+            android:id="@+id/issues_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:gravity="center"
+            android:text="@{context.bindingData.data.repository.open_issues}"
+            app:drawableStartCompat="@drawable/ic_issue"
+            app:layout_constraintBottom_toBottomOf="@id/watchers_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/forks_count"/>
+
+        <Button
+            android:id="@+id/owner_details_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            android:text="@string/owner_details"
+            app:layout_constraintEnd_toStartOf="@id/repo_details_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/issues_count"/>
+
+        <Button
+            android:id="@+id/repo_details_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            android:text="@string/repo_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/owner_details_btn"
+            app:layout_constraintTop_toBottomOf="@id/issues_count"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

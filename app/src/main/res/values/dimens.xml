@@ -16,4 +16,7 @@
 
     <!--  Search list item values  -->
     <dimen name="repo_owner_image_wh">100dp</dimen>
+
+    <!--  Repository details screen-specific  -->
+    <dimen name="author_image_h">350dp</dimen>
 </resources>

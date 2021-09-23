@@ -9,6 +9,7 @@ import com.nedkuj.github.databinding.FragmentSearchBinding
 import com.nedkuj.github.extension.onResult
 import com.nedkuj.github.extension.onScrollListener
 import com.nedkuj.github.feature.search.adapter.SearchAdapter
+import com.nedkuj.github.model.Repository
 import com.nedkuj.github.util.rxlifecycle.RxLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
@@ -39,7 +40,7 @@ class SearchFragment : BaseFragment<SearchFullViewState, FragmentSearchBinding>(
         .filter { it && binding.searchField.text.toString().isNotEmpty() }
         .map { binding.searchField.text.toString() }
 
-    override fun onRepoClick(): Observable<String> = searchAdapter.onItemPressed
+    override fun onRepoClick(): Observable<Repository> = searchAdapter.onItemPressed
     override fun onUserImageClick(): Observable<String> = searchAdapter.onUserImagePressed
 
     override fun onSortClick(): Observable<Unit> = binding.sortIcon.clicks()

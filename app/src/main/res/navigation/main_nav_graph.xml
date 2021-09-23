@@ -28,7 +28,8 @@
         tools:layout="@layout/fragment_repository_details">
 
         <argument
-            android:name="name"
+            android:name="repository"
+            app:argType="com.nedkuj.github.model.Repository"
             app:nullable="false"/>
     </fragment>
 
