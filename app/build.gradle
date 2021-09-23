@@ -49,6 +49,20 @@ android {
             buildConfigField("int", "PAGINATION_LIMIT", '10')
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        free {
+            resValue "string", "app_name", "GitHub Free"
+            dimension "version"
+            applicationIdSuffix ".free"
+        }
+        premium {
+            resValue "string", "app_name", "GitHub Premium"
+            dimension "version"
+            applicationIdSuffix ".premium"
+        }
+    }
 }
 
 dependencies {
