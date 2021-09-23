@@ -5,15 +5,19 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="context"
             type="com.nedkuj.github.feature.repositorydetails.RepositoryDetailsFragment"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/repo_details_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/spacing_standard">
+        android:padding="@dimen/spacing_standard"
+        app:layoutDescription="@xml/fragment_repodetails_scene">
 
         <ImageView
             android:id="@+id/author_image"
@@ -29,7 +33,8 @@
             style="@style/GitHubTitleTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{context.bindingData.data.repository.owner.login}"
+            android:gravity="center_vertical"
+            android:text="@{context.bindingData.data.repository.owner.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/author_image"/>
@@ -133,24 +138,77 @@
             app:layout_constraintStart_toEndOf="@id/forks_count"/>
 
         <Button
-            android:id="@+id/owner_details_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_small"
-            android:text="@string/owner_details"
-            app:layout_constraintEnd_toStartOf="@id/repo_details_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/issues_count"/>
-
-        <Button
             android:id="@+id/repo_details_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_small"
             android:text="@string/repo_details"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/owner_details_btn"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/issues_count"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/author_about_tw"
+            style="@style/GitHubTitleTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/about_the_author"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repo_details_btn"/>
+
+        <TextView
+            android:id="@+id/author_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:text="@{context.bindingData.data.repository.owner.type}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_about_tw"/>
+
+        <TextView
+            android:id="@+id/author_blog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:text="@{context.bindingData.data.repository.owner.blog}"
+            android:visibility="@{context.bindingData.data.repository.owner.blog != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_type"/>
+
+        <TextView
+            android:id="@+id/author_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:text="@{context.bindingData.data.repository.owner.location}"
+            android:visibility="@{context.bindingData.data.repository.owner.location != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_blog"/>
+
+        <TextView
+            android:id="@+id/author_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_standard"
+            android:text="@{context.bindingData.data.repository.owner.email}"
+            android:visibility="@{context.bindingData.data.repository.owner.email != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_location"/>
+
+        <Button
+            android:id="@+id/owner_details_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            android:text="@string/owner_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_email"/>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
