@@ -5,16 +5,22 @@ import android.net.Uri
 import com.nedkuj.github.BuildConfig
 import com.nedkuj.github.common.BasePresenter
 import com.nedkuj.github.di.fragment.Navigator
+import com.nedkuj.github.network.repository.GetUserDataRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
 class RepositoryDetailsPresenter @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val getUserDataRepository: GetUserDataRepository
 ) : BasePresenter<RepositoryDetailsView, RepositoryDetailsViewState, RepositoryDetailsFullViewState>() {
     override fun bindIntents() {
         val onLoad = intent(RepositoryDetailsView::onLoad)
             .switchMapToViewState(
-                { Observable.just(it) },
+                { repository ->
+                    getUserDataRepository.fetch(repository.owner.login).map { owner ->
+                        repository.copy(owner = owner)
+                    }
+                },
                 { RepositoryDetailsSuccessViewState(it) },
                 { throwable, _ -> RepositoryDetailsErrorViewState(throwable) },
                 { RepositoryDetailsLoadingViewState(true) }
