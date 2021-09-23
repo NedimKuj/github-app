@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">GitHub</string>
-
     <!-- Error messages -->
     <string name="something_went_wrong">Something went wrong</string>
     <string name="wrong_password">Invalid credentials</string>

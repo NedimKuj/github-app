@@ -3,6 +3,7 @@ package com.nedkuj.github.feature.search
 import androidx.lifecycle.Lifecycle
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
+import com.nedkuj.github.BuildConfig
 import com.nedkuj.github.R
 import com.nedkuj.github.common.BaseFragment
 import com.nedkuj.github.databinding.FragmentSearchBinding
@@ -40,8 +41,8 @@ class SearchFragment : BaseFragment<SearchFullViewState, FragmentSearchBinding>(
         .filter { it && binding.searchField.text.toString().isNotEmpty() }
         .map { binding.searchField.text.toString() }
 
-    override fun onRepoClick(): Observable<Repository> = searchAdapter.onItemPressed
-    override fun onUserImageClick(): Observable<String> = searchAdapter.onUserImagePressed
+    override fun onRepoClick(): Observable<Repository> = searchAdapter.onItemPressed.filter { BuildConfig.FLAVOR  == PREMIUM_FLAVOR}
+    override fun onUserImageClick(): Observable<String> = searchAdapter.onUserImagePressed.filter { BuildConfig.FLAVOR  == PREMIUM_FLAVOR}
 
     override fun onSortClick(): Observable<Unit> = binding.sortIcon.clicks()
     override fun onSort(): Observable<Pair<String, String?>> = onResult(SORT_KEY).share()
@@ -55,6 +56,7 @@ class SearchFragment : BaseFragment<SearchFullViewState, FragmentSearchBinding>(
     private companion object {
         private const val SEARCH_DEBOUNCE_IN_MILLIS = 2000L
         private const val SORT_KEY = "sort"
+        private const val PREMIUM_FLAVOR = "premium"
     }
 
 }
