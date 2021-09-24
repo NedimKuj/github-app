@@ -17,6 +17,12 @@
             app:exitAnim="@animator/screen_exit"/>
 
         <action
+            android:id="@+id/nav_search_to_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@animator/screen_enter"
+            app:exitAnim="@animator/screen_exit"/>
+
+        <action
             android:id="@+id/nav_Search_to_sort"
             app:destination="@id/nav_sort"/>
     </fragment>
@@ -38,5 +44,28 @@
         android:name="com.nedkuj.github.feature.sort.SortFragment"
         android:label="SORT"
         tools:layout="@layout/fragment_sort"/>
+
+    <fragment
+        android:id="@+id/nav_auth"
+        android:name="com.nedkuj.github.feature.auth.AuthFragment"
+        android:label="AUTH"
+        tools:layout="@layout/fragment_auth">
+
+        <argument android:name="code"/>
+        <deepLink app:uri="https://github.com/?code={code}"/>
+
+        <action
+            android:id="@+id/nav_auth_to_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@animator/screen_enter"
+            app:exitAnim="@animator/screen_exit"
+            app:popUpTo="@id/nav_search"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.nedkuj.github.feature.profile.ProfileFragment"
+        android:label="PROFILE"
+        tools:layout="@layout/fragment_profile"/>
 
 </navigation>

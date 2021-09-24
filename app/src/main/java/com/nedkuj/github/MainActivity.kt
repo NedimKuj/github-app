@@ -1,13 +1,16 @@
 package com.nedkuj.github
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.nedkuj.github.common.permission.IRxPermission
 import com.nedkuj.github.di.activity.ActivityResult
 import com.nedkuj.github.di.activity.FragmentResult
+import com.nedkuj.github.di.fragment.Navigator
 import com.nedkuj.github.model.base.FragmentResultEntity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.annotations.NonNull
@@ -38,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         orientation = resources.configuration.orientation
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        findNavController(R.id.fragment_container).handleDeepLink(intent)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

@@ -7,6 +7,8 @@ import com.nedkuj.github.di.ApiUrl
 import com.nedkuj.github.network.*
 import com.nedkuj.github.network.repository.RetrofitClient
 import com.nedkuj.github.network.repository.RetrofitClientImpl
+import com.nedkuj.github.network.session.Session
+import com.nedkuj.github.network.session.SessionImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +35,10 @@ open class ApplicationModule {
     @Singleton
     @Provides
     fun serializer(serializer: SerializerImpl): Serializer = serializer
-    
+
+    @Singleton
+    @Provides
+    fun session(session: SessionImpl): Session = session
 
     @Singleton
     @Provides
@@ -44,5 +49,5 @@ open class ApplicationModule {
     @Provides
     fun sharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences(context.packageName, 0)
-    
+
 }

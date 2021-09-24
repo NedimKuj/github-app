@@ -28,9 +28,11 @@
     <string name="permission">permission</string>
 
     <!--  Placeholders  -->
-    <string name="repository_name">Repository name</string>
-    <string name="name_of_the_author">Name of the author</string>
     <string name="start_typing">Start typing to search repositories</string>
+
+    <!--  Authentication  -->
+    <string name="open_profile">Open profile</string>
+    <string name="log_in">Log in</string>
 
     <!--  Sort parameters  -->
     <string name="stars">Stars</string>
