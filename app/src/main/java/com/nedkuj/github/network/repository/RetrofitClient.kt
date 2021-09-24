@@ -3,4 +3,5 @@ import com.nedkuj.github.network.api.*
 
 interface RetrofitClient {
   fun getGitHubAPI(): GitHubAPI
+  fun getGitHubAuthAPI(): GitHubAuthAPI
 }

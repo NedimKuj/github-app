@@ -13,4 +13,5 @@ interface SearchView : BaseView<SearchFullViewState> {
     fun onUserImageClick(): Observable<String>
     fun onSortClick(): Observable<Unit>
     fun onSort(): Observable<Pair<String, String?>>
+    fun onProfileButton(): Observable<Unit>
 }

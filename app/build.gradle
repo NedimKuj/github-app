@@ -5,6 +5,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
+    id 'realm-android'
 }
 
 android {
@@ -42,11 +43,17 @@ android {
             buildConfigField("String", "API", "\"https://api.github.com\"")
             buildConfigField("String", "WEB", "\"https://github.com/\"")
             buildConfigField("int", "PAGINATION_LIMIT", '10')
+            buildConfigField("String", "OAUTH_ENDPOINT", "\"https://github.com/login/oauth/authorize?client_id=4f4c9c910bbbba8831e8\"")
+            buildConfigField("String", "CLIENT_ID", "\"4f4c9c910bbbba8831e8\"")
+            buildConfigField("String", "CLIENT_SECRET", "\"f6feb5099dfeaf41c34f20f79394ffb1c1cf83f0\"")
         }
         release {
             buildConfigField("String", "API", "\"https://api.github.com\"")
             buildConfigField("String", "WEB", "\"https://github.com/\"")
             buildConfigField("int", "PAGINATION_LIMIT", '10')
+            buildConfigField("String", "OAUTH_ENDPOINT", "\"https://github.com/login/oauth/authorize?client_id=4f4c9c910bbbba8831e8\"")
+            buildConfigField("String", "CLIENT_ID", "\"4f4c9c910bbbba8831e8\"")
+            buildConfigField("String", "CLIENT_SECRET", "\"f6feb5099dfeaf41c34f20f79394ffb1c1cf83f0\"")
         }
     }
 
@@ -113,6 +120,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     // chuck
+    premiumImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 

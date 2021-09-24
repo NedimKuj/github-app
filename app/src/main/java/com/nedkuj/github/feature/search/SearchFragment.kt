@@ -33,6 +33,8 @@ class SearchFragment : BaseFragment<SearchFullViewState, FragmentSearchBinding>(
     }
 
     override fun onLoad(): Observable<Lifecycle.Event> = RxLifecycle.onResume(this)
+    override fun onProfileButton(): Observable<Unit> = binding.profileButton.clicks()
+
     override fun onSearch(): Observable<String> = binding.searchField.textChanges()
         .debounce(SEARCH_DEBOUNCE_IN_MILLIS, TimeUnit.MILLISECONDS)
         .map { it.toString() }
