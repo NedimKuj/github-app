@@ -15,7 +15,8 @@ data class SearchFullViewState(
     val urlParameter: String? = null,
     val repository: Repository? = null,
     val currentPage: Int = 1,
-    val sortState: SortState? = null
+    val sortState: SortState? = null,
+    val hasSession: Boolean? = null
 ) : Parcelable
 
 class SearchSuccessViewState(val repositories: List<Repository>?) : SearchViewState()
@@ -26,3 +27,4 @@ class SearchNavigationViewState(val repository: Repository?): SearchViewState()
 class SearchMoreViewState(val repositories: List<Repository>?): SearchViewState()
 class SearchMoreLoadingViewState(val loading: Boolean?, val currentPage: Int): SearchViewState()
 class SearchSortViewState(val repositories: List<Repository>?, val sortState: SortState?): SearchViewState()
+class SearchAuthViewState(val hasSession: Boolean?): SearchViewState()

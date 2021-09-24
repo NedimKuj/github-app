@@ -9,14 +9,34 @@ import com.nedkuj.github.model.SearchReposPayload
 import com.nedkuj.github.model.SortState
 import com.nedkuj.github.model.response.RepoResponseObject
 import com.nedkuj.github.network.repository.GetReposDataRepository
+import com.nedkuj.github.network.session.Session
+import com.orhanobut.logger.Logger
 import io.reactivex.Observable
 import javax.inject.Inject
 
 class SearchPresenter @Inject constructor(
     private val navigator: Navigator,
+    private val session: Session,
     private val getReposDataRepository: GetReposDataRepository
 ) : BasePresenter<SearchView, SearchViewState, SearchFullViewState>() {
     override fun bindIntents() {
+        val onProfile = intent(SearchView::onProfileButton)
+            .switchMapToViewState(
+                { session.hasSession() },
+                { SearchAuthViewState(it) },
+                { throwable, _ -> SearchErrorViewState(throwable) }
+            ).executeActionOn<SearchAuthViewState> { state ->
+                if (state.hasSession == true) {
+                    Logger.i("User has session")
+                    navigator.getNavController().navigate(SearchFragmentDirections.navSearchToProfile())
+                } else {
+                    Logger.i("No session")
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(BuildConfig.OAUTH_ENDPOINT)
+                    navigator.startActivityIntent(intent)
+                }
+            }
+
         val onSearch = intent(SearchView::onSearch)
             .switchMapToViewState(
                 { queryText ->
@@ -108,6 +128,7 @@ class SearchPresenter @Inject constructor(
             }.emmitAfter<SearchUrlViewState> { SearchUrlViewState(null) }
 
         subscribeForViewStateChanges(
+            onProfile,
             onSearch,
             onNextPage,
             onSortClick,
@@ -134,6 +155,7 @@ class SearchPresenter @Inject constructor(
             )
             is SearchMoreLoadingViewState -> previousState.copy(loading = changes.loading, currentPage = changes.currentPage + 1)
             is SearchSortViewState -> previousState.copy(repositories = changes.repositories, sortState = changes.sortState)
+            is SearchAuthViewState -> previousState.copy(hasSession = changes.hasSession)
         }
     }
 

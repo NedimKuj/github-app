@@ -1,5 +1,6 @@
 package com.nedkuj.github.network.api
 
+import com.nedkuj.github.model.AuthenticatedUser
 import com.nedkuj.github.model.Owner
 import com.nedkuj.github.model.response.RepoResponseObject
 import io.reactivex.Single
@@ -19,4 +20,7 @@ interface GitHubAPI {
 
     @GET("/users/{username}")
     fun getUser(@Path("username") username: String): Single<Owner>
+
+    @GET("/user")
+    fun getAuthenticatedUser(): Single<AuthenticatedUser>
 }
